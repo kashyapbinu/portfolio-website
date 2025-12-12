@@ -1,0 +1,2366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Agrima Singh - Materials Engineering Portfolio</title>
+<style>
+        :root {
+            --bg-main: #020617;
+            --bg-elevated: #020617;
+            --bg-card: rgba(15, 23, 42, 0.85);
+            --bg-card-soft: rgba(15, 23, 42, 0.7);
+            --border-subtle: rgba(148, 163, 184, 0.4);
+            --border-strong: rgba(56, 189, 248, 0.8);
+            --accent: #22d3ee;
+            --accent-soft: rgba(34, 211, 238, 0.2);
+            --accent-strong: #0ea5e9;
+            --accent-warm: #facc15;
+            --text-main: #e5e7eb;
+            --text-soft: #9ca3af;
+            --text-muted: #6b7280;
+            --shadow-strong: 0 18px 45px rgba(15, 23, 42, 0.9);
+            --radius-card: 20px;
+            --transition-fast: 0.25s ease;
+            --transition-soft: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-main);
+            color: var(--text-main);
+            overflow-x: hidden;
+        }
+
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            /* space-like layered background: deep space gradient + faint nebula glows + subtle starfield */
+            background:
+                radial-gradient(circle at 10% 20%, rgba(56, 189, 248, 0.08), transparent 60%),
+                radial-gradient(circle at 80% 80%, rgba(59, 130, 246, 0.06), transparent 60%),
+                radial-gradient(circle at 50% 10%, rgba(94, 234, 212, 0.05), transparent 55%),
+                linear-gradient(135deg, #000006 0%, #020617 35%, #05021a 100%),
+                /* tiny star speckles using repeating radial gradients */
+                repeating-radial-gradient(circle at 20% 15%, rgba(255,255,255,0.06) 0 0.6px, transparent 0.6px 4px),
+                repeating-radial-gradient(circle at 85% 70%, rgba(255,255,255,0.04) 0 0.6px, transparent 0.6px 5px);
+            background-size: 200% 200%, auto;
+            animation: gradientFlow 26s ease-in-out infinite;
+        }
+
+        @keyframes gradientFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .particles {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            background: radial-gradient(circle, rgba(148, 163, 184, 0.6), transparent 60%);
+            border-radius: 50%;
+            animation: float 20s linear infinite;
+            opacity: 0;
+        }
+
+        @keyframes float {
+            0%   { transform: translateY(0) translateX(0) scale(1); opacity: 0; }
+            10%  { opacity: 0.7; }
+            80%  { opacity: 0.7; }
+            100% { transform: translateY(-110vh) translateX(80px) scale(0.6); opacity: 0; }
+        }
+
+        .grid-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            background-image:
+                linear-gradient(rgba(148, 163, 184, 0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(148, 163, 184, 0.04) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            mix-blend-mode: soft-light;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(2, 6, 23, 0.92);
+            backdrop-filter: blur(22px);
+            padding: 0.8rem 2rem;
+            z-index: 1000;
+            box-shadow: 0 8px 30px rgba(15, 23, 42, 0.9);
+            border-bottom: 1px solid rgba(30, 64, 175, 0.7);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 1.8rem;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: var(--text-soft);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color var(--transition-fast);
+            position: relative;
+            padding: 0.4rem 0.6rem;
+            letter-spacing: 0.04em;
+            font-size: 0.95rem;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -0.2rem;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-strong));
+            transition: width var(--transition-fast), transform var(--transition-fast);
+            transform: translateX(-50%);
+        }
+
+        nav a:hover {
+            color: var(--accent);
+        }
+
+        nav a:hover::after {
+            width: 80%;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        section {
+            min-height: 100vh;
+            padding: 6rem 2rem 2.5rem;
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        #hero {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 900px;
+        }
+
+        .hero-content h1 {
+            font-size: 4rem;
+            background: linear-gradient(135deg, #e5e7eb, #bae6fd, #7dd3fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+            font-weight: 800;
+            letter-spacing: -0.06em;
+        }
+
+        .hero-content h2 {
+            font-size: 1.7rem;
+            color: #93c5fd;
+            margin-bottom: 1.2rem;
+            font-weight: 600;
+        }
+
+        .hero-content p {
+            font-size: 1.1rem;
+            color: var(--text-soft);
+            max-width: 680px;
+            margin: 0 auto 2.2rem;
+            line-height: 1.9;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1.3rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.95rem 2.3rem;
+            border-radius: 999px;
+            font-size: 0.98rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform var(--transition-soft), box-shadow var(--transition-soft), background var(--transition-fast), color var(--transition-fast);
+            text-decoration: none;
+            letter-spacing: 0.04em;
+            border: 1px solid transparent;
+        }
+
+        .btn-primary {
+            background: radial-gradient(circle at 10% 20%, #0ea5e9, #0369a1);
+            color: #f9fafb;
+            box-shadow: 0 10px 30px rgba(8, 47, 73, 0.9);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-4px) scale(1.03);
+            box-shadow: 0 18px 40px rgba(8, 47, 73, 0.95);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border-color: rgba(148, 163, 184, 0.6);
+            color: #e5e7eb;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(15, 23, 42, 0.9);
+            border-color: var(--accent);
+            transform: translateY(-3px);
+            box-shadow: 0 14px 35px rgba(8, 47, 73, 0.7);
+        }
+
+        .section-title {
+            font-size: 2.6rem;
+            text-align: center;
+            margin-bottom: 3.5rem;
+            color: #e5e7eb;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+            font-weight: 700;
+            letter-spacing: -0.04em;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--accent), var(--accent-strong), transparent);
+            border-radius: 999px;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 3rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, rgba(148, 163, 184, 0.6), rgba(56, 189, 248, 0.9));
+            border-radius: 999px;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 3rem;
+            padding-left: 2rem;
+            transition: transform var(--transition-soft);
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2.7rem;
+            top: 12px;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--accent-strong);
+            box-shadow: 0 0 0 5px rgba(34, 211, 238, 0.25), 0 0 22px rgba(56, 189, 248, 0.9);
+            transition: transform var(--transition-soft), box-shadow var(--transition-soft);
+        }
+
+        .timeline-item:hover::before {
+            transform: scale(1.4);
+            box-shadow: 0 0 0 8px rgba(34, 211, 238, 0.25), 0 0 30px rgba(59, 130, 246, 1);
+        }
+
+        .timeline-item:hover {
+            transform: translateX(10px);
+        }
+
+        /* ========== New Education timeline (black & white, modern) ========== */
+        .edu-timeline {
+            position: relative;
+            margin-top: 1rem;
+            margin-bottom: 1.8rem;
+            padding-left: 62px; /* space for left markers */
+        }
+
+        .edu-timeline::before {
+            content: "";
+            position: absolute;
+            left: 28px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.12));
+            border-radius: 2px;
+            z-index: 1;
+        }
+
+        .edu-item {
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+            margin: 20px 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        .edu-marker {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #ffffff;
+            border: 3px solid #ffffff;
+            box-shadow: 0 8px 20px rgba(255,0,0,0.06);
+            margin-left: -38px; /* aligns marker above the vertical line */
+            flex: 0 0 36px;
+        }
+
+        /* UPDATED: blackish-red edu-card with white text */
+        .edu-card {
+            padding: 40px 40px;
+            border-radius: 26px;
+            max-width: 1280px;
+            /* deep-space glass: subtle nebula tint + star speckles */
+            background: linear-gradient(180deg, rgba(10,12,18,0.86), rgba(6,8,14,0.6));
+            border: 1px solid rgba(255,255,255,0.04);
+            box-shadow: 0 40px 120px rgba(2,6,23,0.85), inset 0 -6px 60px rgba(10,20,40,0.35);
+            transform: scale(1.06);
+            position: relative;
+            overflow: hidden;
+        }
+        .edu-card::before {
+            /* soft nebula overlay */
+            content: '';
+            position: absolute;
+            inset: -30% -10% -10% -10%;
+            background: radial-gradient(400px 220px at 12% 20%, rgba(34,211,238,0.045), transparent 18%),
+                        radial-gradient(360px 200px at 85% 70%, rgba(159,122,255,0.03), transparent 18%),
+                        repeating-radial-gradient(circle at 40% 10%, rgba(255,255,255,0.012) 0 0.6px, transparent 0.6px 6px);
+            filter: blur(34px) saturate(120%);
+            mix-blend-mode: screen;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .edu-card > * { position: relative; z-index: 2; }
+
+        /* subtle rim glow along top edge */
+        .edu-card::after {
+            content: '';
+            position: absolute;
+            left: 0; right: 0; top: 0;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(34,211,238,0.0), rgba(34,211,238,0.12), rgba(159,122,255,0.08), rgba(34,211,238,0.0));
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* update text tone for space readability */
+        .edu-title { font-size: 1.28rem; color: #e9f7ff; }
+        .edu-sub { color: rgba(200,220,255,0.9); }
+
+        /* marker glow and subtle bob */
+        .edu-marker {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, rgba(32,200,255,1), rgba(6,100,150,0.95));
+            border: 3px solid rgba(16,40,60,0.6);
+            box-shadow: 0 10px 28px rgba(32,200,255,0.12), 0 0 12px rgba(32,200,255,0.08) inset;
+            margin-left: -46px;
+            transition: transform 0.35s ease, box-shadow 0.35s ease;
+            animation: markerBob 6s ease-in-out infinite;
+        }
+        @keyframes markerBob { 0%{transform:translateY(0)}50%{transform:translateY(6px)}100%{transform:translateY(0)} }
+
+        /* tags darker, more holographic */
+        .edu-tag { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); color: #dceefb; }
+
+        /* responsive adjustments keep the larger feel */
+        @media (max-width: 860px) {
+            .edu-card { padding: 26px 20px; border-radius: 16px; transform: scale(1); }
+            .edu-marker { margin-left: -36px; width: 14px; height: 14px; }
+        }
+
+        .edu-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 22px 48px rgba(0,0,0,0.75), 0 26px 60px rgba(139, 0, 0, 0.12);
+        }
+
+        .edu-year {
+            display: inline-block;
+            background: rgba(0,0,0,0.45);
+            color: #ffffff;
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+        }
+
+        .edu-title {
+            font-size: 1.28rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .edu-sub {
+            color: #ffefef;
+            font-weight: 600;
+            margin-bottom: 8px;
+            opacity: 0.95;
+        }
+
+        .edu-desc {
+            font-size: 1.08rem;
+            line-height: 1.75;
+            color: rgba(235,245,255,0.92);
+            margin-bottom: 12px;
+        }
+
+        .edu-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .edu-tag {
+            font-size: 0.9rem;
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        @media (max-width: 860px) {
+            .edu-timeline { padding-left: 48px; }
+            .edu-marker { margin-left: -28px; width: 12px; height: 12px; border-width: 2px; }
+            .edu-card { max-width: calc(100% - 40px); }
+        }
+        /* ========== End Education timeline styles ========== */
+
+        /* --- Vibrant glassy cards (About, Achievements, etc.) left unchanged --- */
+
+.card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 24px;
+    padding: 2.2rem;
+    margin-bottom: 2rem;
+    cursor: default;
+
+    /* layered neon-ish glass background */
+    background:
+        radial-gradient(circle at 0% 0%, rgba(56, 189, 248, 0.18), transparent 55%),
+        radial-gradient(circle at 100% 100%, rgba(129, 140, 248, 0.18), transparent 55%),
+        rgba(15, 23, 42, 0.97);
+
+    border: 1px solid rgba(148, 163, 184, 0.55);
+    box-shadow: 0 22px 55px rgba(15, 23, 42, 0.98);
+    backdrop-filter: blur(22px);
+
+    transition:
+        transform var(--transition-soft),
+        box-shadow var(--transition-soft),
+        border-color var(--transition-soft),
+        background 0.4s ease;
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    inset: -40%;
+    pointer-events: none;
+
+    /* soft conic glow that wraps the card */
+    background: conic-gradient(
+        from 210deg,
+        rgba(56, 189, 248, 0.0),
+        rgba(56, 189, 248, 0.45),
+        rgba(129, 140, 248, 0.45),
+        rgba(236, 72, 153, 0.5),
+        rgba(56, 189, 248, 0.0)
+    );
+    filter: blur(22px);
+    opacity: 0.55;
+    mix-blend-mode: screen;
+    transition: opacity 0.55s ease;
+}
+
+/* slight lift on hover, but the glow is already there by default */
+.card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(56, 189, 248, 0.9);
+    box-shadow: 0 28px 70px rgba(15, 23, 42, 1);
+    background:
+        radial-gradient(circle at 0% 10%, rgba(56, 189, 248, 0.25), transparent 55%),
+        radial-gradient(circle at 110% 90%, rgba(236, 72, 153, 0.22), transparent 55%),
+        rgba(15, 23, 42, 0.99);
+}
+
+.card:hover::before {
+    opacity: 0.9;
+}
+
+
+        .card h3 {
+            color: #e5e7eb;
+            margin-bottom: 0.6rem;
+            font-size: 1.6rem;
+            font-weight: 700;
+        }
+
+        .card h4 {
+            color: #93c5fd;
+            margin-bottom: 0.6rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .card p {
+            color: var(--text-soft);
+            line-height: 1.8;
+            font-size: 0.98rem;
+        }
+
+        .card ul {
+            margin-top: 1.3rem;
+            padding-left: 1.3rem;
+        }
+
+        .card li {
+            color: var(--text-soft);
+            margin-bottom: 0.7rem;
+            line-height: 1.7;
+            font-size: 0.98rem;
+        }
+
+        /* -------- PROJECT CARDS - UPDATED (big layout like WallOfPortfolios) ---------- */
+
+        #projects .container {
+            padding-top: 3rem;
+        }
+
+        .projects-header {
+            text-align: center;
+            margin-bottom: 2.2rem;
+        }
+
+        .projects-subtitle {
+            margin-top: -2rem;
+            margin-bottom: 2.4rem;
+            color: var(--text-muted);
+            font-size: 0.98rem;
+        }
+
+        /* Make the projects stacked vertically (each card spans width) */
+        .projects-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 3.4rem;
+        }
+
+        .project-card {
+            width: 100%;
+            min-height: 520px;
+            border-radius: 26px;
+            overflow: hidden;
+            cursor: pointer;
+            border: 1px solid rgba(148, 163, 184, 0.16);
+            background: rgba(8, 10, 12, 0.96);
+            box-shadow: 0 28px 70px rgba(0,0,0,0.6);
+            transition: transform 0.35s ease, box-shadow 0.35s ease, filter 0.35s ease;
+            display: grid;
+            grid-template-rows: auto 1fr;
+        }
+
+        /* Hover brightening & lift */
+        .project-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 48px 110px rgba(56, 189, 248, 0.18);
+            filter: brightness(1.08) saturate(1.06);
+            border-color: rgba(56,189,248,0.22);
+        }
+
+        /* Large image / media area */
+        .project-media {
+            width: 100%;
+            height: 350px;
+            overflow: hidden;
+            position: relative;
+            background: linear-gradient(180deg, rgba(0,0,0,0.02), rgba(0,0,0,0.12));
+        }
+
+        .project-media img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: scale(1.02);
+            transition: transform 0.8s ease, filter 0.4s ease;
+            display:block;
+        }
+
+        /* subtle zoom on hover */
+        .project-card:hover .project-media img {
+            transform: scale(1.08);
+            filter: contrast(1.05) saturate(1.08);
+        }
+
+        .project-media-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(2,6,23,0.0) 0%, rgba(2,6,23,0.20) 45%, rgba(2,6,23,0.92) 100%);
+            pointer-events: none;
+        }
+
+        /* Content area below image */
+        .project-content {
+            padding: 2.1rem 2.2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            gap: 0.8rem;
+            background: linear-gradient(180deg, rgba(15,23,42,0.02), rgba(15,23,42,0.02));
+        }
+
+        .project-pill-row {
+            display: flex;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.3rem;
+        }
+
+        .project-pill {
+            padding: 0.28rem 0.8rem;
+            border-radius: 999px;
+            font-size: 0.78rem;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            border: 1px solid rgba(148,163,184,0.16);
+            background: rgba(15,23,42,0.9);
+            color: #e5e7eb;
+        }
+
+        .project-pill-soft {
+            background: rgba(34,211,238,0.10);
+            border-color: rgba(34,211,238,0.22);
+            color: #bfeefd;
+        }
+
+        .project-content h3 {
+            font-size: 1.9rem;
+            margin-bottom: 0.2rem;
+            color: #ffffff;
+        }
+
+        .project-meta {
+            color: var(--text-muted);
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .project-summary {
+            list-style: disc;
+            padding-left: 1.35rem;
+            margin-bottom: 0.6rem;
+            color: var(--text-soft);
+            font-size: 1rem;
+        }
+
+        .project-summary li:not(:last-child) {
+            margin-bottom: 0.35rem;
+        }
+
+        .project-footer-row {
+            margin-top: 0.6rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .project-stack {
+            font-size: 0.92rem;
+            color: var(--text-muted);
+        }
+
+        .project-cta {
+            font-size: 0.95rem;
+            font-weight: 700;
+            border-radius: 999px;
+            padding: 0.5rem 1.15rem;
+            border: 1px solid rgba(148, 163, 184, 0.18);
+            background: rgba(12,14,16,0.98);
+            color: #e5e7eb;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: all 0.22s ease;
+        }
+
+        .project-card:hover .project-cta {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: rgba(12,14,16,0.98);
+        }
+
+        .project-cta span {
+            transform: translateX(0);
+            transition: transform 0.25s ease;
+        }
+
+        .project-card:hover .project-cta span {
+            transform: translateX(4px);
+        }
+
+        /* -------- Project modal (unchanged) ---------- */
+
+        .project-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(2, 6, 23, 0.88);
+            backdrop-filter: blur(18px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1200;
+        }
+
+        .project-modal-overlay.active {
+            display: flex;
+        }
+
+        .project-modal {
+            width: min(1000px, 95vw);
+            max-height: 90vh;
+            overflow-y: auto;
+            background: rgba(15, 23, 42, 0.98);
+            border-radius: 24px;
+            border: 1px solid var(--border-subtle);
+            box-shadow: var(--shadow-strong);
+            padding: 2.4rem 2.6rem 2.2rem;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1.1rem;
+            right: 1.4rem;
+            border-radius: 999px;
+            border: 1px solid var(--border-subtle);
+            background: rgba(15, 23, 42, 0.9);
+            color: var(--text-soft);
+            font-size: 1.3rem;
+            width: 34px;
+            height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background var(--transition-fast), border-color var(--transition-fast), transform 0.15s ease;
+        }
+
+        .modal-close:hover {
+            background: rgba(15, 23, 42, 0.95);
+            border-color: var(--accent);
+            color: var(--accent);
+            transform: translateY(-1px);
+        }
+
+        .modal-title {
+            font-size: 2rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .modal-subtitle {
+            font-size: 0.98rem;
+            color: var(--text-soft);
+            margin-bottom: 1.2rem;
+        }
+
+        .modal-body p {
+            font-size: 0.98rem;
+            line-height: 1.8;
+            color: var(--text-soft);
+        }
+
+        .modal-gallery {
+            margin-top: 1.6rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.3rem;
+        }
+
+        .photo-card {
+            background: rgba(15, 23, 42, 0.9);
+            border-radius: 16px;
+            border: 1px solid rgba(148, 163, 184, 0.35);
+            min-height: 180px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .photo-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .photo-placeholder {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-align: center;
+            padding: 1rem;
+        }
+
+        /* rest of original styles (skills, contact etc.) unchanged */
+        .skills-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 2.4rem;
+            align-items: stretch;
+        }
+
+        .skill-category {
+            position: relative;
+            overflow: hidden;
+            border-radius: 24px;
+            padding: 2.1rem 2.0rem 2.0rem;
+            background:
+                radial-gradient(circle at 0% 0%, rgba(56, 189, 248, 0.18), transparent 55%),
+                radial-gradient(circle at 100% 100%, rgba(129, 140, 248, 0.18), transparent 55%),
+                rgba(15, 23, 42, 0.96);
+            border: 1px solid rgba(148, 163, 184, 0.45);
+            box-shadow: 0 18px 45px rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(22px);
+            transition:
+                transform var(--transition-soft),
+                box-shadow var(--transition-soft),
+                border-color var(--transition-soft),
+                background 0.4s ease;
+        }
+
+        .skill-category::before {
+            content: '';
+            position: absolute;
+            inset: -40%;
+            opacity: 0;
+            background:
+                conic-gradient(
+                    from 210deg,
+                    rgba(56, 189, 248, 0.0),
+                    rgba(56, 189, 248, 0.45),
+                    rgba(129, 140, 248, 0.45),
+                    rgba(236, 72, 153, 0.5),
+                    rgba(56, 189, 248, 0.0)
+                );
+            filter: blur(18px);
+            transition: opacity 0.55s ease;
+            pointer-events: none;
+        }
+
+        .skill-category:hover::before {
+            opacity: 1;
+        }
+
+        .skill-category:hover {
+            transform: translateY(-6px);
+            border-color: var(--border-strong);
+            box-shadow: 0 26px 70px rgba(15, 23, 42, 0.98);
+            background:
+                radial-gradient(circle at 0% 10%, rgba(56, 189, 248, 0.25), transparent 55%),
+                radial-gradient(circle at 110% 90%, rgba(236, 72, 153, 0.22), transparent 55%),
+                rgba(15, 23, 42, 0.98);
+        }
+
+        .skill-category:nth-child(1) { border-color: rgba(56, 189, 248, 0.65); }
+        .skill-category:nth-child(2) { border-color: rgba(129, 140, 248, 0.65); }
+        .skill-category:nth-child(3) { border-color: rgba(52, 211, 153, 0.6); }
+        .skill-category:nth-child(4) { border-color: rgba(250, 204, 21, 0.7); }
+
+        .skill-category h3 {
+            color: #e5e7eb;
+            margin-bottom: 1.5rem;
+            font-size: 1.28rem;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+        }
+
+        .skill-item {
+            display: flex;
+            align-items: center;
+            padding: 0.78rem 0.95rem;
+            margin-bottom: 0.85rem;
+            border-radius: 14px;
+            background:
+                linear-gradient(120deg,
+                    rgba(15, 23, 42, 0.96),
+                    rgba(15, 23, 42, 0.9));
+            border: 1px solid rgba(30, 64, 175, 0.5);
+            box-shadow: 0 8px 22px rgba(15, 23, 42, 0.9);
+            transition:
+                transform 0.2s ease,
+                border-color 0.25s ease,
+                box-shadow 0.25s ease,
+                background 0.25s ease;
+        }
+
+        .skill-item:hover {
+            transform: translateX(7px);
+            border-color: rgba(56, 189, 248, 0.9);
+            background:
+                linear-gradient(120deg,
+                    rgba(15, 23, 42, 0.98),
+                    rgba(15, 23, 42, 1));
+            box-shadow: 0 12px 30px rgba(15, 23, 42, 0.95);
+        }
+
+        .skill-icon {
+            width: 34px;
+            height: 34px;
+            min-width: 34px;
+            border-radius: 12px;
+            margin-right: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.98rem;
+            color: #e5e7eb;
+            background:
+                radial-gradient(circle at 10% 0%, #38bdf8, #0f172a 70%);
+            box-shadow:
+                0 0 0 1px rgba(15, 23, 42, 1),
+                0 8px 20px rgba(15, 23, 42, 0.9),
+                0 0 18px rgba(56, 189, 248, 0.7);
+        }
+
+        .skill-item span {
+            font-size: 0.96rem;
+            color: #e5e7eb;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1.8rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            padding: 1.7rem 2rem;
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border-radius: var(--radius-card);
+            border: 1px solid var(--border-subtle);
+            transition: transform var(--transition-soft), border-color var(--transition-soft), box-shadow var(--transition-soft), background var(--transition-fast);
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .contact-item:hover {
+            transform: translateX(10px);
+            border-color: var(--border-strong);
+            box-shadow: 0 14px 40px rgba(15, 23, 42, 0.9);
+            background: var(--bg-card-soft);
+        }
+
+        .contact-icon {
+            width: 58px;
+            height: 58px;
+            background: radial-gradient(circle at 10% 0, #0ea5e9, #020617);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1.5rem;
+            font-size: 1.7rem;
+            box-shadow: 0 10px 30px rgba(8, 47, 73, 0.9);
+        }
+
+        .contact-item h4 {
+            font-size: 1.05rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .contact-item p {
+            font-size: 0.95rem;
+            color: var(--text-soft);
+        }
+
+        .achievement-badge {
+            display: inline-block;
+            padding: 0.4rem 1.1rem;
+            background: linear-gradient(135deg, var(--accent-warm), #eab308);
+            color: #0f172a;
+            border-radius: 999px;
+            font-weight: 700;
+            margin-right: 0.5rem;
+            margin-bottom: 0.6rem;
+            box-shadow: 0 8px 22px rgba(250, 204, 21, 0.4);
+            font-size: 0.85rem;
+        }
+
+        .profile-image-container {
+            width: 210px;
+            height: 210px;
+            margin: 0 auto 1.7rem;
+            position: relative;
+            border-radius: 50%;
+            padding: 4px;
+            background: conic-gradient(from 180deg, #22d3ee, #0ea5e9, #38bdf8, #22d3ee);
+            box-shadow: 0 18px 45px rgba(8, 47, 73, 0.9);
+            animation: pulseGlow 3.2s ease-in-out infinite;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 18px 45px rgba(8, 47, 73, 0.9); }
+            50% { box-shadow: 0 25px 70px rgba(8, 47, 73, 1); }
+        }
+
+        .profile-image {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #020617;
+            transition: transform 0.4s ease;
+        }
+
+        .profile-image-container:hover .profile-image {
+            transform: scale(1.06);
+        }
+
+        .profile-image-container::before {
+            content: '';
+            position: absolute;
+            inset: -12px;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, rgba(34, 211, 238, 0.1), transparent, rgba(59, 130, 246, 0.18), transparent);
+            opacity: 0;
+            z-index: -1;
+            transition: opacity 0.4s ease;
+        }
+
+        .profile-image-container:hover::before {
+            opacity: 1;
+            animation: rotate 5s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to   { transform: rotate(360deg); }
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.8rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .stat-box {
+            background: rgba(15, 23, 42, 0.95);
+            padding: 1.7rem 1.4rem;
+            border-radius: 16px;
+            text-align: center;
+            border: 1px solid rgba(51, 65, 85, 0.8);
+            transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+        }
+
+        .stat-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(15, 23, 42, 0.95);
+            border-color: rgba(56, 189, 248, 0.7);
+        }
+
+        .stat-number {
+            font-size: 2.1rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #e5e7eb, #7dd3fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            margin-top: 0.3rem;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 3rem;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50%      { transform: translateX(-50%) translateY(10px); }
+        }
+
+        .scroll-indicator::after {
+            content: '↓';
+            font-size: 2.2rem;
+            color: var(--accent);
+            text-shadow: 0 0 18px rgba(56, 189, 248, 0.9);
+        }
+
+        .clubs-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin-top: 1rem;
+        }
+
+        .club-tag {
+            padding: 0.35rem 0.9rem;
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid rgba(148, 163, 184, 0.7);
+            border-radius: 999px;
+            color: #cbd5f5;
+            font-weight: 500;
+            font-size: 0.8rem;
+        }
+
+        @media (max-width: 1100px) {
+            .project-card { min-height: 460px; }
+            .project-media { height: 300px; }
+            .project-content h3 { font-size: 1.6rem; }
+        }
+
+        @media (max-width: 760px) {
+            .hero-content h1 { font-size: 2.6rem; }
+            .hero-content h2 { font-size: 1.3rem; }
+            .section-title    { font-size: 2rem; }
+            nav ul { gap: 0.9rem; }
+            nav { padding-inline: 1rem; }
+            .btn { padding: 0.85rem 1.7rem; font-size: 0.9rem; }
+            section { padding-inline: 1.4rem; }
+            .project-media { height: 220px; }
+            .project-card { min-height: 420px; }
+            .project-content { padding: 1.4rem; }
+            .project-content h3 { font-size: 1.4rem; }
+            .project-summary { font-size: 0.95rem; padding-left: 1rem; }
+            .project-cta { padding: 0.45rem 0.9rem; font-size: 0.9rem; }
+        }
+
+        /* Canvas for neon cursor trail */
+        #cursor-trail-canvas {
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 1400; /* above background/particles but below nav (nav is 1000, modal 1200) */
+            pointer-events: none;
+            mix-blend-mode: screen;
+        }
+
+
+        /* ===== ABOUT section tweaks: modern, space-integrated card ===== */
+        .about-card {
+            /* make the about wrapper transparent so there's no heavy dark panel behind */
+            max-width: 1180px;
+            margin: 0 auto 2.2rem;
+            padding: 0; /* handled by inner panel */
+            border-radius: 28px;
+            background: transparent;
+            border: none;
+            box-shadow: none;
+            position: relative;
+            overflow: visible;
+            color: #dceefb;
+        }
+
+        /* inner modern glassy space panel */
+        .about-inner {
+            margin: 0 auto;
+            padding: 3.2rem 3rem;
+            border-radius: 24px;
+            background: linear-gradient(180deg, rgba(8,12,20,0.55), rgba(6,8,14,0.3));
+            border: 1px solid rgba(255,255,255,0.04);
+            box-shadow: 0 40px 90px rgba(2,6,23,0.65), inset 0 1px 0 rgba(255,255,255,0.02);
+            position: relative;
+            overflow: hidden;
+            z-index: 2;
+            backdrop-filter: blur(8px) saturate(120%);
+        }
+
+        .about-inner::before {
+            content: '';
+            position: absolute;
+            inset: -30% -10% -10% -10%;
+            background: radial-gradient(600px 300px at 15% 25%, rgba(14,165,233,0.045), transparent 18%),
+                        radial-gradient(420px 220px at 78% 70%, rgba(99,102,241,0.035), transparent 18%);
+            filter: blur(36px) contrast(110%);
+            mix-blend-mode: screen;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ensure inner content appears above pseudo-bg */
+        .about-inner > .profile-wrapper, .about-inner > p { position: relative; z-index: 3; }
+
+        /* slightly tighter inside spacing */
+        .about-inner p { max-width: 1020px; margin: 0 auto; color: rgba(220,238,251,0.95); line-height:1.85; }
+
+
+        /* layered nebula + starfield inside about card */
+        .about-bg-layers {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background:
+                radial-gradient(600px 300px at 15% 25%, rgba(14,165,233,0.06), transparent 18%),
+                radial-gradient(420px 220px at 78% 70%, rgba(99,102,241,0.05), transparent 18%),
+                repeating-radial-gradient(circle at 40% 10%, rgba(255,255,255,0.02) 0 0.6px, transparent 0.6px 6px),
+                repeating-radial-gradient(circle at 85% 60%, rgba(255,255,255,0.015) 0 0.6px, transparent 0.6px 8px);
+            mix-blend-mode: screen;
+            transform: translateZ(0);
+            transition: transform 0.12s linear;
+            filter: blur(12px) saturate(120%);
+            opacity: 0.95;
+        }
+
+        /* subtle slow drift for nebula layers */
+        @keyframes nebulaDrift {
+            0% { transform: translate3d(0,0,0); }
+            50% { transform: translate3d(-18px,6px,0); }
+            100% { transform: translate3d(0,0,0); }
+        }
+        .about-bg-layers { animation: nebulaDrift 28s ease-in-out infinite; }
+
+        /* bring content above bg layers */
+        .about-card .card { position: relative; z-index: 2; background: transparent; padding: 0; box-shadow: none; border: none; }
+
+        /* bigger profile circle that blends with card */
+        .profile-image-container {
+            width: 230px;
+            height: 230px;
+            margin: 0 auto 1.4rem;
+            padding: 6px;
+            background: radial-gradient(circle at 10% 10%, rgba(34,211,238,0.18), rgba(14,165,233,0.08));
+            border-radius: 50%;
+            box-shadow: 0 18px 40px rgba(4,8,14,0.6), 0 0 18px rgba(12,200,255,0.06) inset;
+            border: 6px solid rgba(2,10,20,0.5);
+        }
+
+        .profile-image { border: 6px solid rgba(2,10,20,0.6); }
+
+        /* tighten about text for a more modern layout */
+        #about .card p {
+            max-width: 1040px;
+            margin: 0 auto;
+            font-size: 1.06rem;
+            color: rgba(220,238,251,0.95);
+            line-height: 1.9;
+        }
+
+        /* Education heading within about */
+        .about-education-title {
+            text-align: center;
+            margin: 2.6rem auto 1.2rem;
+            color: #dff6ff;
+            font-size: 2.0rem;
+            letter-spacing: -0.02em;
+            text-shadow: 0 6px 18px rgba(12,40,60,0.28);
+        }
+
+        /* Bigger, more prominent education cards */
+        .edu-timeline { padding-left: 48px; }
+        .edu-card {
+            padding: 22px 22px;
+            border-radius: 18px;
+            max-width: 1080px;
+            background: linear-gradient(180deg, rgba(10,12,16,0.8), rgba(6,8,12,0.65));
+            border: 1px solid rgba(255,255,255,0.03);
+            box-shadow: 0 20px 60px rgba(2,6,23,0.6);
+        }
+        .edu-year { padding: 8px 12px; font-size: 0.96rem; }
+        .edu-title { font-size: 1.14rem; }
+        .edu-desc { font-size: 1rem; color: rgba(235,245,255,0.9); }
+        .edu-tag { font-size: 0.84rem; padding: 7px 10px; }
+
+        /* marker color cooler and subtle glow */
+        .edu-marker { background: rgba(12,200,255,0.92); border: 3px solid rgba(12,200,255,0.95); box-shadow: 0 8px 40px rgba(12,200,255,0.08); }
+
+        /* responsive tweak for mobile */
+        @media (max-width: 860px) {
+            .about-card { padding: 2rem; border-radius: 16px; }
+            .profile-image-container { width: 160px; height: 160px; }
+            .edu-card { padding: 14px; }
+            .about-education-title { font-size: 1.4rem; }
+        }
+
+        /* soft nebula glow behind the about card */
+        .about-card::after {
+            content: '';
+            position: absolute;
+            width: 60%;
+            height: 120%;
+            right: -10%;
+            top: -10%;
+            background: radial-gradient(closest-side at 30% 20%, rgba(34,211,238,0.06), rgba(14,165,233,0.03) 20%, transparent 40%), radial-gradient(closest-side at 80% 80%, rgba(99,102,241,0.045), transparent 25%);
+            filter: blur(36px) saturate(120%);
+            pointer-events: none;
+            transform: rotate(-8deg);
+            mix-blend-mode: screen;
+        }
+
+        /* larger profile circle that blends with card */
+        .profile-image-container {
+            width: 220px;
+            height: 220px;
+            margin: 0 auto 1.4rem;
+            padding: 6px;
+            background: radial-gradient(circle at 10% 10%, rgba(34,211,238,0.22), rgba(14,165,233,0.12));
+        }
+
+        /* tighten about text for a more modern layout */
+        #about .card p {
+            max-width: 1000px;
+            margin: 0 auto;
+            font-size: 1.05rem;
+            color: rgba(220,238,251,0.9);
+            line-height: 1.85;
+        }
+
+        /* Education heading within about */
+        .about-education-title {
+            text-align: center;
+            margin: 2.4rem auto 1.2rem;
+            color: #dff6ff;
+            font-size: 1.9rem;
+            letter-spacing: -0.02em;
+        }
+
+        /* Bigger, more prominent education cards */
+        .edu-timeline { padding-left: 42px; }
+        .edu-card {
+            padding: 20px 20px;
+            border-radius: 18px;
+            max-width: 1020px;
+        }
+        .edu-year { padding: 8px 12px; font-size: 0.95rem; }
+        .edu-title { font-size: 1.12rem; }
+        .edu-desc { font-size: 1rem; color: rgba(235,245,255,0.9); }
+        .edu-tag { font-size: 0.82rem; padding: 7px 10px; }
+
+        /* marker color cooler and subtle glow */
+        .edu-marker { background: rgba(12,200,255,0.92); border: 3px solid rgba(12,200,255,0.95); box-shadow: 0 8px 30px rgba(12,200,255,0.08); }
+
+        /* responsive tweak for mobile */
+        @media (max-width: 860px) {
+            .about-card { padding: 2rem; border-radius: 16px; }
+            .profile-image-container { width: 160px; height: 160px; }
+            .edu-card { padding: 14px; }
+            .about-education-title { font-size: 1.4rem; }
+        }
+
+</style>
+
+</head>
+<body>
+    <div class="animated-bg"></div>
+    <div class="grid-overlay"></div>
+    <div class="particles" id="particles"></div>
+
+    <!-- Neon cursor trail canvas (added) -->
+    <canvas id="cursor-trail-canvas" aria-hidden="true"></canvas>
+    <!-- comet canvas -->
+    <canvas id="comet-canvas" aria-hidden="true"></canvas>
+
+    <nav>
+        <ul>
+            <li><a href="#hero">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#experience">Experience</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#achievements">Achievements</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <section id="hero">
+        <div class="hero-content">
+            <h1>Agrima Singh</h1>
+            <h2>Metallurgical &amp; Materials Engineering · Information Technology</h2>
+            <p>Research-oriented engineer and aerospace enthusiast exploring stochastic resonance, multiscale material behavior, and embedded systems—bridging nanoscale devices, advanced aerospace structures, and high-performance Formula racing technologies.</p>
+            <div class="cta-buttons">
+                <a href="#contact" class="btn btn-primary">Get In Touch</a>
+                <a href="#projects" class="btn btn-secondary">View Projects</a>
+            </div>
+            <div class="scroll-indicator"></div>
+        </div>
+    </section>
+
+    <section id="about">
+        <div class="container">
+            <h2 class="section-title">About Me</h2>
+            
+            <div class="about-card">
+                <div class="about-bg-layers" aria-hidden="true"></div>
+                <div class="about-inner">
+                <div class="profile-image-container" style="margin: 0 auto 1.7rem;">
+                    <img src="agupic.png" alt="Agrima Singh" class="profile-image" id="profileImg">
+                </div>
+                <p style="font-size: 1.05rem; line-height: 1.9; color: #9ca3af; max-width: 900px; margin: 0 auto;">
+                    A passionate explorer at the intersection of aerospace engineering and material science, driven by an insatiable curiosity for how things work—from the subatomic to the interstellar. I believe in the power of being a “Jack of all trades” in a hyper-specialized world, embracing versatility as a strength rather than a flaw. Constantly evolving, constantly learning, and always challenging what’s possible as I strive toward my highest potential.
+                </p>
+            </div>
+            </div>
+
+            <!-- ====== Education: REPLACED with modern black & white timeline (only this block changed) ====== -->
+            <h2 class="section-title">Education</h2>
+            <div class="edu-timeline" aria-label="Education timeline">
+                <!-- NITK -->
+                <div class="edu-item" role="article" aria-label="NITK education">
+                    <div class="edu-marker" aria-hidden="true"></div>
+                    <div class="edu-card">
+                        <div class="edu-year">Aug 2023 – May 2027</div>
+                        <div class="edu-title">National Institute of Technology Karnataka (NITK)</div>
+                        <div class="edu-sub">B.Tech — Metallurgical &amp; Materials Engineering (Minor: Information Technology)</div>
+                        <div class="edu-desc">Focused on materials, CFD and embedded-systems projects. Relevant coursework: Materials Characterization, Thermodynamics, Fluid Mechanics, Sensors &amp; Embedded Systems.</div>
+                        <div class="edu-tags" aria-hidden="true">
+                            <span class="edu-tag">NITK Racing</span>
+                            <span class="edu-tag">NITK Rocket League</span>
+                            <span class="edu-tag">IEEE NITK</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Class XII -->
+                <div class="edu-item" role="article" aria-label="Class XII">
+                    <div class="edu-marker" aria-hidden="true"></div>
+                    <div class="edu-card">
+                        <div class="edu-year">2022</div>
+                        <div class="edu-title">Suraj School, Gurugram — Class XII</div>
+                        <div class="edu-sub">Physics · Chemistry · Mathematics</div>
+                        <div class="edu-desc">Strong foundation in physics and mathematics which prepared me for engineering and computational modelling.</div>
+                        <div class="edu-tags" aria-hidden="true">
+                            <span class="edu-tag">Advanced Mathematics</span>
+                            <span class="edu-tag">Physics</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Class X -->
+                <div class="edu-item" role="article" aria-label="Class X">
+                    <div class="edu-marker" aria-hidden="true"></div>
+                    <div class="edu-card">
+                        <div class="edu-year">2020</div>
+                        <div class="edu-title">Suraj School, Gurugram — Class X</div>
+                        <div class="edu-sub">Secondary Education</div>
+                        <div class="edu-desc">Completed Class X with distinction (97.2%). Early academic excellence that supported later STEM pursuits.</div>
+                        <div class="edu-tags" aria-hidden="true">
+                            <span class="edu-tag">Academic Excellence</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- =================================================================== -->
+
+        </div>
+    </section>
+
+    <section id="experience">
+        <div class="container">
+            <h2 class="section-title">Research Experience</h2>
+            <div class="timeline">
+                <div class="timeline-item card internship-card"
+                     onclick="window.location.href='iisc-internship.html'"
+                     style="cursor: pointer;"
+                     aria-label="View detailed IISc internship page">
+                    <h3>Indian Institute of Science (IISc), Bengaluru</h3>
+                    <h4>Research Internship | May 2025 – July 2025</h4>
+                    <p><strong>Stochastic Resonance in Volatile Systems</strong></p>
+                    <p style="margin-top: 0.9rem; color: #9ca3af;"><em>Centre for Nano Science and Engineering (CeNSE) · Dr. Pavan Nukala</em></p>
+                    <ul>
+                        <li>Conducted a 2-month project on stochastic resonance in volatile systems, including transistor-like devices.</li>
+                        <li>Explored noise-induced transitions in memristive and vanadium oxide-based devices.</li>
+                        <li>Analyzed the impact of white and colored noise across 8 configurations on switching dynamics.</li>
+                        <li>Technical stack: MATLAB, Python, LTSpice for simulation, analysis, and visualization.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROJECTS SECTION -->
+    <section id="projects">
+        <div class="container">
+            <h2 class="section-title">Projects</h2>
+            <div class="projects-header">
+                <p class="projects-subtitle">
+                    A quick tour of the simulations, rockets, and nanoscale systems I’ve been building recently.
+                </p>
+            </div>
+
+            <div class="projects-grid">
+                <!-- InSpace -->
+                <article class="project-card" data-project="inspace">
+                    <div class="project-media">
+                        <img src="abay.jpg" alt="InSpace Model Rocketry avionics bay" loading="lazy">
+                        <div class="project-media-overlay"></div>
+                    </div>
+                    <div class="project-content">
+                        <div class="project-pill-row">
+                            <span class="project-pill">Aerospace · Telemetry</span>
+                            <span class="project-pill project-pill-soft">Oct 2024 – Present</span>
+                        </div>
+                        <h3>InSpace Model Rocketry</h3>
+                        <p class="project-meta"><strong>Focus:</strong> Flight telemetry &amp; structural response</p>
+                        <ul class="project-summary">
+                            <li>Linking in-flight sensor behavior to composite airframe deformation and thermal gradients.</li>
+                            <li>Designed a dual XBee Zigbee wireless telemetry stack for real-time high-altitude launches.</li>
+                        </ul>
+                        <div class="project-footer-row">
+                            <div class="project-stack">
+                                Tools: XBee, Python, MATLAB
+                            </div>
+                            <div class="project-cta">
+                                View more <span>→</span>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Shock Wave Detection -->
+                <article class="project-card" data-project="shock">
+                    <div class="project-media">
+                        <img src="noz.jpg" alt="Shock wave detection flow visualization" loading="lazy">
+                        <div class="project-media-overlay"></div>
+                    </div>
+                    <div class="project-content">
+                        <div class="project-pill-row">
+                            <span class="project-pill">CFD · ML</span>
+                            <span class="project-pill project-pill-soft">IEEE Project · Feb–May 2025</span>
+                        </div>
+                        <h3>Shock Wave Detection in Supersonic Flows</h3>
+                        <p class="project-meta"><strong>Focus:</strong> Raptor-2 style engine flows</p>
+                        <ul class="project-summary">
+                            <li>Simulated compressible flows and extracted Mach, pressure and temperature shock features.</li>
+                            <li>Trained a CNN to automatically localise shock regions from Fluent-generated flow fields.</li>
+                        </ul>
+                        <div class="project-footer-row">
+                            <div class="project-stack">
+                                Tools: ANSYS Fluent, Python, CNNs
+                            </div>
+                            <div class="project-cta">
+                                View more <span>→</span>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Multiscale -->
+                <article class="project-card" data-project="multiscale">
+                    <div class="project-media">
+                        <img src="lat.png" alt="Multiscale material analysis lattice" loading="lazy">
+                        <div class="project-media-overlay"></div>
+                    </div>
+                    <div class="project-content">
+                        <div class="project-pill-row">
+                            <span class="project-pill">Materials · Simulation</span>
+                            <span class="project-pill project-pill-soft">IEEE Project · Oct 2024 – Mar 2025</span>
+                        </div>
+                        <h3>Multiscale Material Analysis</h3>
+                        <p class="project-meta"><strong>Focus:</strong> From crystal lattice to device behavior</p>
+                        <ul class="project-summary">
+                            <li>Modeled GaAs, SrTiO₃ and PEDOT structures and inspected defects via ASE + VESTA.</li>
+                            <li>Used abTEM to link nanoscale contrasts and diffraction patterns to macroscopic properties.</li>
+                        </ul>
+                        <div class="project-footer-row">
+                            <div class="project-stack">
+                                Tools: ASE, abTEM, VESTA
+                            </div>
+                            <div class="project-cta">
+                                View more <span>→</span>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+
+            <!-- Hidden project detail templates (modal content) -->
+            <div class="project-detail-templates" style="display:none;">
+                <div id="detail-inspace">
+                    <p>
+                        <ul>
+                            <li>
+                                Linking sensor behavior under dynamic flight conditions to material response by correlating multi-axis 
+                                acceleration, vibration spectra, and thermal gradients with structural deformation characteristics of 
+                                composite airframes. This involved analyzing strain-induced signal drift, thermal-induced noise offsets, 
+                                and latency patterns in sensor output to understand how extreme aerodynamic loads and fluctuating 
+                                temperature fields at high altitudes influence measurement fidelity. The study further examined 
+                                thermal–mechanical coupling effects, including coefficient of thermal expansion (CTE) mismatches, 
+                                material fatigue behavior, and the resulting impact on sensor calibration stability and response linearity.
+                            </li>
+                            <br><br>
+                            <li>
+                                Designed and implemented a robust wireless telemetry architecture using dual XBee Zigbee transceivers 
+                                configured in a high-throughput, interference-resistant mesh communication protocol for real-time downlink 
+                                of six critical sensor parameters. The system operated under dynamic link-margin constraints and 
+                                Doppler-induced frequency shifts during ascent, ensuring packet integrity through cyclic redundancy checks (CRC), 
+                                low-latency acknowledgment frames, and adaptive retransmission logic. The ground station interface incorporated 
+                                a custom data parser for time-stamped telemetry decoding, enabling continuous monitoring of structural loads, 
+                                thermal profiles, and attitude variations throughout the flight envelope.
+                            </li>
+                        </ul>
+                    </p>
+                    <div class="modal-gallery">
+                        <div class="photo-card">
+                            <div class="photo-placeholder">
+                                <img src="abay.jpg" alt="avionics bay">
+                            </div>
+                        </div>
+                        <div class="photo-card">
+                            <div class="photo-placeholder">
+                                <img src="gis.png" alt="Telemetry dashboard / hardware setup">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="detail-shock">
+                    <p>
+                        <ul style="list-style-type: disc;">
+                            <li style="margin-bottom: 25px;">
+                                Simulated supersonic combustion flows of the SpaceX Raptor-2 engine using ANSYS Fluent, incorporating real-gas thermodynamic models and compressible Navier–Stokes solvers. Extracted shock-related flow-field features such as Mach number discontinuities, high-pressure gradients, and steep temperature variations across shock cells. Post-processing involved Schlieren-like visualization Tekniks and contour-based field interrogation to characterize oblique and normal shock formations under varying chamber pressures and nozzle expansion ratios.
+                            </li>
+                            <li>
+                                Developed and trained a Convolutional Neural Network (CNN) model capable of autonomously detecting shockwave regions from the CFD-generated flow data. The pipeline transformed simulation outputs into spatially encoded tensors, enabling the model to learn shock signatures from gradient intensity maps and thermodynamic discontinuities. This automated aerodynamic event identification framework reduced manual inspection time and enhanced validation accuracy, paving the way for real-time shock localization and design optimization in propulsion systems.
+                            </li>
+                        </ul>
+                    </p>
+                    <div class="modal-gallery">
+                        <div class="photo-card">
+                            <div class="photo-placeholder">
+                                <img src="graph.png" alt="Shock wave graphs">
+                            </div>
+                        </div>
+                        <div class="photo-card">
+                            <div class="photo-placeholder">
+                                <img src="c.png" alt="CFD visualisation">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="detail-multiscale">
+                    <p>
+                        <ul style="list-style-type: disc;">
+                            <li style="margin-bottom: 25px;">
+                                Modeled and optimized crystal structures of GaAs, SrTiO<sub>3</sub>, and PEDOT using the Atomic Simulation Environment (ASE), incorporating lattice parameter adjustments, defect insertion, and symmetry constraints. Employed VESTA for three-dimensional structural visualization and atomic coordination analysis, enabling detailed inspection of crystallographic orientations, point defects, grain boundaries, and bond-length variations. This workflow facilitated the study of defect-driven modifications in electronic structure, mechanical stability, and local geometry.
+                            </li>
+                            <li>
+                                Executed abTEM simulations to investigate electron-beam interactions at the nanoscale, generating diffraction patterns, phase-contrast images, and intensity profiles for semiconductor and polymer systems. Analyzed contrast mechanisms arising from atomic ordering, strain fields, and defect distributions to establish structure–property correlations. These simulations enabled predictive understanding of how nanoscale morphological deviations influence charge transport behavior, optical response, and overall material performance.
+                            </li>
+                        </ul>
+                    </p>
+                    <div class="modal-gallery">
+                        <div class="photo-card">
+                            <div class="photo-placeholder">
+                                <img src="lat.png" alt="Lattice visualisation">
+                            </div>
+                        </div>
+                        <div class="photo-card">
+                            <div class="photo-placeholder">
+                                <img src="l.png" alt="abTEM output">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End hidden templates -->
+        </div>
+    </section>
+
+    <section id="skills">
+        <div class="container">
+            <h2 class="section-title">Skills &amp; Expertise</h2>
+            <div class="skills-container">
+                <div class="skill-category">
+                    <h3>Programming Languages</h3>
+                    <div class="skill-item">
+                        <div class="skill-icon">🐍</div>
+                        <span>Python</span>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-icon">C</div>
+                        <span>C Programming</span>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-icon">🌐</div>
+                        <span>HTML5, CSS3, JavaScript</span>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-icon">A</div>
+                        <span>Arduino Programming</span>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-icon">M</div>
+                        <span>MATLAB</span>
+                    </div>
+                </div>
+
+                <div class="skill-category">
+                    <h3>Software &amp; Tools</h3>
+                    <div class="skill-item">
+                        <div class="skill-icon">A</div>
+                        <span>ANSYS Fluent</span>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-icon">S</div>
+                        <span>STM32CubeIDE</span>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-icon">V</div>
+                        <span>VESTA</span>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-icon">L</div>
+                        <span>LTSpice</span>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-icon">A</div>
+                        <span>ASE &amp; abTEM</span>
+                    </div>
+                </div>
+
+                <div class="skill-category">
+                    <h3>Libraries &amp; Frameworks</h3>
+                    <div class="skill-item">
+                        <div class="skill-icon">📊</div>
+                        <span>NumPy &amp; Matplotlib</span>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-icon">🔬</div>
+                        <span>SciPy</span>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-icon">👁️</div>
+                        <span>OpenCV &amp; CVZone</span>
+                    </div>
+                </div>
+
+                <div class="skill-category">
+                    <h3>Technical Expertise</h3>
+                    <div class="skill-item">
+                        <div class="skill-icon">🌊</div>
+                        <span>Computational Fluid Dynamics</span>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-icon">🔬</div>
+                        <span>Material Analysis</span>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-icon">⚡</div>
+                        <span>Embedded Systems</span>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-icon">📡</div>
+                        <span>Data Acquisition Systems</span>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-icon">🏎️</div>
+                        <span>Automotive Electronics</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="achievements">
+        <div class="container">
+            <h2 class="section-title">Achievements &amp; Leadership</h2>
+            
+            <div class="card">
+                <h3>Internship Coordinator · CDC NITK</h3>
+                <h4>August 2025 – Present</h4>
+                <span class="achievement-badge">💼 Leadership Role</span>
+                <ul>
+                    <li>Facilitating communication between students and recruiting companies.</li>
+                    <li>Streamlining internship application and selection workflows.</li>
+                    <li>Coordinating logistics and schedules for internship drives.</li>
+                    <li>Ensuring timely flow of opportunities across multiple departments.</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3>Electronics &amp; Firmware Engineer · NITK Racing</h3>
+                <h4>March 2024 – Present</h4>
+                <span class="achievement-badge">🏎️ Formula Bharat 2025</span>
+                <span class="achievement-badge">🥇 1st Place FMEA</span>
+                <span class="achievement-badge">🥈 2nd Place EDP</span>
+                <span class="achievement-badge">🏆 Overall Rank E03</span>
+                <ul>
+                    <li>Developing powertrain electronics for an EV race car (Formula Bharat 2025, Pi-EV, SUPRA).</li>
+                    <li>Designing thermistor-MUX temperature modules and CAN-based message handling.</li>
+                    <li>Optimizing firmware (Arduino, STM32CubeIDE) for low-latency, accurate analog reads.</li>
+                    <li>Contributed to winning 1st in FMEA, 2nd in EDP, and securing overall rank E03.</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3>Academic Excellence</h3>
+                <span class="achievement-badge">📚 Top Performer</span>
+                <ul>
+                    <li><strong>Class XII:</strong> 95.6% with 99/100 in Mathematics.</li>
+                    <li><strong>Class X:</strong> 97.2%.</li>
+                    <li><strong>NITK Major CGPA:</strong> 8.26/10 in Metallurgical &amp; Materials Engineering.</li>
+                    <li><strong>NITK Minor CGPA:</strong> 8.5/10 in Information Technology.</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3>Active Club Participation</h3>
+                <span class="achievement-badge">🌟 Multi-Club Member</span>
+                <ul>
+                    <li><strong>NITK Racing:</strong> Electronics and firmware development for Formula racing.</li>
+                    <li><strong>NITK Rocket League:</strong> Rocketry and telemetry systems.</li>
+                    <li><strong>NCC:</strong> Leadership, endurance, and discipline training.</li>
+                    <li><strong>HESC:</strong> Higher Education for Social Change initiatives.</li>
+                    <li><strong>IEEE NITK:</strong> Technical projects and research collaborations.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <div class="container">
+            <h2 class="section-title">Get In Touch</h2>
+            <div class="contact-info">
+                <a href="tel:+918527587358" class="contact-item">
+                    <div class="contact-icon">📞</div>
+                    <div>
+                        <h4>Phone</h4>
+                        <p>+91 8527587358</p>
+                    </div>
+                </a>
+                <a href="mailto:agrima.231mt005@nitk.edu.in" class="contact-item">
+                    <div class="contact-icon">✉️</div>
+                    <div>
+                        <h4>Email</h4>
+                        <p>agrima.231mt005@nitk.edu.in</p>
+                    </div>
+                </a>
+                <a href="https://linkedin.com/in/agrima-singh" class="contact-item" target="_blank">
+                    <div class="contact-icon">🔗</div>
+                    <div>
+                        <h4>LinkedIn</h4>
+                        <p>Connect with me professionally</p>
+                    </div>
+                </a>
+                <a href="https://github.com/agrima-singh" class="contact-item" target="_blank">
+                    <div class="contact-icon">💻</div>
+                    <div>
+                        <h4>GitHub</h4>
+                        <p>Explore my code and projects</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Project modal (expanded view) -->
+    <div id="project-modal" class="project-modal-overlay" aria-hidden="true">
+        <div class="project-modal">
+            <button id="modal-close" class="modal-close" aria-label="Close project details">×</button>
+            <h3 id="modal-title" class="modal-title"></h3>
+            <div id="modal-subtitle" class="modal-subtitle"></div>
+            <div id="modal-body" class="modal-body"></div>
+        </div>
+    </div>
+
+    <script>
+        // Create floating particles
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 70; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            const size = Math.random() * 5 + 2;
+            particle.style.width = size + 'px';
+            particle.style.height = size + 'px';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.top = (Math.random() * 100 + 20) + '%';
+            particle.style.animationDuration = Math.random() * 16 + 12 + 's';
+            particle.style.animationDelay = Math.random() * 10 + 's';
+            particlesContainer.appendChild(particle);
+        }
+
+        // Smooth scrolling for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Intersection Observer for scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -80px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = 'fadeInUp 0.9s forwards';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('section').forEach(section => {
+            observer.observe(section);
+        });
+
+        // Cursor glow placeholder
+        const cards = document.querySelectorAll('.card, .project-card');
+        cards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+
+        // ---------- Project modal logic ----------
+        const modalOverlay = document.getElementById('project-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalSubtitle = document.getElementById('modal-subtitle');
+        const modalBody = document.getElementById('modal-body');
+        const modalCloseBtn = document.getElementById('modal-close');
+
+        function openProjectModal(card) {
+            const key = card.dataset.project;
+            if (!key) return;
+
+            const template = document.getElementById(`detail-${key}`);
+            if (!template) return;
+
+            const titleEl = card.querySelector('h3');
+            modalTitle.textContent = titleEl ? titleEl.textContent : 'Project details';
+
+            const firstP = card.querySelector('.project-meta');
+            modalSubtitle.textContent = firstP ? firstP.textContent : '';
+
+            modalBody.innerHTML = template.innerHTML;
+
+            modalOverlay.classList.add('active');
+            modalOverlay.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeProjectModal() {
+            modalOverlay.classList.remove('active');
+            modalOverlay.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+        }
+
+        document.querySelectorAll('.project-card').forEach(card => {
+            card.addEventListener('click', () => openProjectModal(card));
+        });
+
+        modalCloseBtn.addEventListener('click', closeProjectModal);
+
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) {
+                closeProjectModal();
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modalOverlay.classList.contains('active')) {
+                closeProjectModal();
+            }
+        });
+
+        // ----------------- Neon cursor trail JS -----------------
+        (function initNeonTrail() {
+            // Do not enable on touch devices (battery + UX)
+            if ('ontouchstart' in window || navigator.maxTouchPoints > 0) return;
+
+            const canvas = document.getElementById('cursor-trail-canvas');
+            const ctx = canvas.getContext('2d', { alpha: true });
+            let W = canvas.width = window.innerWidth;
+            let H = canvas.height = window.innerHeight;
+            canvas.style.width = W + 'px';
+            canvas.style.height = H + 'px';
+
+            window.addEventListener('resize', () => {
+                W = canvas.width = window.innerWidth;
+                H = canvas.height = window.innerHeight;
+                canvas.style.width = W + 'px';
+                canvas.style.height = H + 'px';
+            });
+
+            const particles = [];
+            const maxParticles = 160;
+            const palette = [
+                { r: 34, g: 211, b: 238 }, // cyan
+                { r: 14, g: 165, b: 233 }, // sky blue
+                { r: 99, g: 102, b: 241 }, // indigo
+                { r: 236, g: 72, b: 153 }  // pink
+            ];
+
+            let mouse = { x: W / 2, y: H / 2, lastMove: performance.now() };
+
+            function spawn(x, y, colorIdx, speed = 1) {
+                if (particles.length >= maxParticles) particles.shift();
+                particles.push({
+                    x: x + (Math.random() - 0.5) * 8,
+                    y: y + (Math.random() - 0.5) * 8,
+                    vx: (Math.random() - 0.5) * speed * 1.2,
+                    vy: (Math.random() - 0.5) * speed * 1.2 - Math.random() * 0.6,
+                    r: Math.random() * 5 + 2,
+                    life: 1,
+                    decay: Math.random() * 0.018 + 0.016,
+                    color: palette[colorIdx % palette.length],
+                    wobble: (Math.random() - 0.5) * 0.8
+                });
+            }
+
+            let colorPhase = 0;
+            window.addEventListener('mousemove', (e) => {
+                mouse.x = e.clientX;
+                mouse.y = e.clientY;
+                mouse.lastMove = performance.now();
+
+                const speed = Math.min(10, Math.hypot(e.movementX || 0, e.movementY || 0) + 1);
+                const count = Math.min(5, Math.ceil(speed / 2));
+                colorPhase = (colorPhase + 1) % palette.length;
+                for (let i = 0; i < count; i++) {
+                    spawn(mouse.x + (Math.random()-0.5)*6, mouse.y + (Math.random()-0.5)*6, (colorPhase + i) % palette.length, Math.max(0.6, speed * 0.6));
+                }
+            });
+
+            // gentle ambient spawning when idle
+            let idleAccumulator = 0;
+            function ambient(dt) {
+                idleAccumulator += dt;
+                if (idleAccumulator > 220) {
+                    idleAccumulator = 0;
+                    if (Math.random() < 0.45) spawn(mouse.x + (Math.random()-0.5)*12, mouse.y + (Math.random()-0.5)*12, Math.floor(Math.random()*palette.length), 0.5);
+                }
+            }
+
+            let last = performance.now();
+            function loop(now) {
+                const dt = now - last;
+                last = now;
+                ctx.clearRect(0, 0, W, H);
+
+                for (let i = particles.length - 1; i >= 0; i--) {
+                    const p = particles[i];
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.vx *= 0.99;
+                    p.vy *= 0.99;
+                    p.x += Math.sin(now * 0.002 + p.wobble) * 0.12;
+                    p.y += Math.cos(now * 0.002 + p.wobble) * 0.10;
+                    p.life -= p.decay;
+                    if (p.life <= 0) { particles.splice(i, 1); continue; }
+
+                    const alpha = Math.max(0, Math.min(1, p.life));
+                    const c = p.color;
+                    const grd = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 6);
+                    grd.addColorStop(0, `rgba(${c.r},${c.g},${c.b},${0.95 * alpha})`);
+                    grd.addColorStop(0.25, `rgba(${c.r},${c.g},${c.b},${0.45 * alpha})`);
+                    grd.addColorStop(0.6, `rgba(${c.r},${c.g},${c.b},${0.12 * alpha})`);
+                    grd.addColorStop(1, `rgba(${c.r},${c.g},${c.b},0)`);
+
+                    ctx.globalCompositeOperation = 'lighter';
+                    ctx.fillStyle = grd;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.r * 6, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    // core
+                    ctx.globalCompositeOperation = 'source-over';
+                    ctx.fillStyle = `rgba(${c.r},${c.g},${c.b},${0.85 * alpha})`;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, Math.max(0.8, p.r * 0.45), 0, Math.PI * 2);
+                    ctx.fill();
+                }
+
+                ambient(dt);
+                requestAnimationFrame(loop);
+            }
+            requestAnimationFrame(loop);
+
+            // free memory when hidden
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) particles.length = 0;
+            });
+        })();
+        // ----------------- End neon trail -----------------
+
+        // ---------- Comet animation constrained to the Hero + About sections (improved, fixed during scroll) ----------
+        (function initCometSection(){
+            const canvas = document.getElementById('comet-canvas');
+            if (!canvas) return;
+
+            const heroEl = document.getElementById('hero');
+            const aboutEl = document.getElementById('about');
+            if (!heroEl && !aboutEl) return;
+
+            // Use a fullscreen fixed canvas so the comet remains stable while scrolling
+            const ctx = canvas.getContext('2d');
+            function resizeFullCanvas(){
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                canvas.style.position = 'fixed';
+                canvas.style.left = '0px';
+                canvas.style.top = '0px';
+                canvas.style.zIndex = '1300';
+                canvas.style.pointerEvents = 'none';
+            }
+            resizeFullCanvas();
+            window.addEventListener('resize', resizeFullCanvas);
+
+            // comet parameters
+            const comet = {
+                t: Math.random() * Math.PI * 2,
+                speed: 0.0012 + Math.random()*0.0015,
+                cx: 0,
+                cy: 0,
+                rx: 0,
+                ry: 0,
+                headSize: 6 + Math.random()*8,
+                trail: [],
+                maxTrail: 48,
+                active: false
+            };
+
+            function updateBoundsForTarget(target){
+                if (!target) return;
+                const rect = target.getBoundingClientRect(); // viewport coordinates
+                // Position comet relative to viewport (fixed canvas)
+                comet.cx = rect.left + rect.width * 0.5;
+                comet.cy = rect.top + rect.height * 0.45;
+                comet.rx = Math.max(120, rect.width * 0.6);
+                comet.ry = Math.max(80, rect.height * 0.35);
+            }
+
+            function spawnTrail(x,y, vx, vy){
+                comet.trail.push({x,y,vx,vy,life:1});
+                if (comet.trail.length > comet.maxTrail) comet.trail.shift();
+            }
+
+            // smoother visibility control: decide target by checking actual rect overlap (robust during scroll)
+            let currentTarget = null;
+            function isInViewport(rect){
+                return rect.bottom > 0 && rect.top < window.innerHeight;
+            }
+
+            function evaluateVisibility(){
+                const heroRect = heroEl ? heroEl.getBoundingClientRect() : null;
+                const aboutRect = aboutEl ? aboutEl.getBoundingClientRect() : null;
+
+                const heroVisible = heroRect ? isInViewport(heroRect) : false;
+                const aboutVisible = aboutRect ? isInViewport(aboutRect) : false;
+
+                // hero has priority
+                const newTarget = heroVisible ? heroEl : (aboutVisible ? aboutEl : null);
+
+                if (newTarget !== currentTarget) {
+                    currentTarget = newTarget;
+                    if (currentTarget) {
+                        updateBoundsForTarget(currentTarget);
+                        startCycle();
+                    } else {
+                        stopCycle();
+                        comet.trail.length = 0;
+                        ctx.clearRect(0,0,canvas.width, canvas.height);
+                    }
+                } else if (currentTarget) {
+                    // still same target but its rect might have moved during scroll - update bounds
+                    updateBoundsForTarget(currentTarget);
+                }
+            }
+
+            // deterministic cycle (show 9s, hide 21s) but keep cycle running only while target exists
+            let cycleTimer = null;
+            let visibleTimeout = null;
+            function startCycle(){
+                // ensure we clear previous timers
+                if (visibleTimeout) { clearTimeout(visibleTimeout); visibleTimeout = null; }
+                if (cycleTimer) return; // already running
+                comet.active = true;
+                visibleTimeout = setTimeout(()=>{ comet.active = false; }, 9000);
+                cycleTimer = setInterval(()=>{
+                    comet.active = true;
+                    visibleTimeout = setTimeout(()=>{ comet.active = false; }, 9000);
+                }, 30000);
+            }
+            function stopCycle(){
+                comet.active = false;
+                if (cycleTimer) { clearInterval(cycleTimer); cycleTimer = null; }
+                if (visibleTimeout) { clearTimeout(visibleTimeout); visibleTimeout = null; }
+            }
+
+            // run an initial check
+            evaluateVisibility();
+
+            // Listen to scroll/resize for robust checks (throttled)
+            let ticking = false;
+            window.addEventListener('scroll', () => {
+                if (!ticking) {
+                    window.requestAnimationFrame(() => { evaluateVisibility(); ticking = false; });
+                    ticking = true;
+                }
+            }, { passive: true });
+
+            window.addEventListener('resize', () => { evaluateVisibility(); });
+
+            // also use IO as a fallback to catch visibility changes faster
+            const io = new IntersectionObserver(()=>{ evaluateVisibility(); }, {threshold: [0, 0.01, 0.05, 0.15]});
+            if (heroEl) io.observe(heroEl);
+            if (aboutEl) io.observe(aboutEl);
+
+            // animation loop
+            let last = performance.now();
+            function loop(now){
+                const dt = now - last; last = now;
+                ctx.clearRect(0,0,canvas.width, canvas.height);
+                if (comet.active && currentTarget) {
+                    comet.t += comet.speed * dt;
+                    const wob = Math.sin(comet.t*1.7)*0.02;
+                    const x = comet.cx + Math.cos(comet.t) * (comet.rx*(0.85 + wob));
+                    const y = comet.cy + Math.sin(comet.t*0.9) * (comet.ry*(0.7 + wob*0.6));
+                    const vx = -Math.sin(comet.t) * comet.rx * comet.speed * 60;
+                    const vy = Math.cos(comet.t*0.9) * comet.ry * comet.speed * 60 * 0.9;
+                    spawnTrail(x,y,vx,vy);
+
+                    // trail (fiery)
+                    ctx.globalCompositeOperation = 'lighter';
+                    for (let i=0;i<comet.trail.length;i++){
+                        const p = comet.trail[i];
+                        p.x += p.vx * 0.02;
+                        p.y += p.vy * 0.02;
+                        p.vx *= 0.985; p.vy *= 0.985;
+                        p.life -= 0.02;
+                        if (p.life<=0) continue;
+                        const alpha = p.life * (i / comet.trail.length);
+                        const size = (i/comet.trail.length) * (comet.headSize*3);
+                        const grd = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, Math.max(2,size));
+                        grd.addColorStop(0, `rgba(255,255,230,${0.95*alpha})`);
+                        grd.addColorStop(0.25, `rgba(255,190,80,${0.65*alpha})`);
+                        grd.addColorStop(0.6, `rgba(240,90,40,${0.42*alpha})`);
+                        grd.addColorStop(1, `rgba(160,30,20,${0*alpha})`);
+                        ctx.fillStyle = grd;
+                        ctx.beginPath();
+                        ctx.arc(p.x, p.y, Math.max(1, size*0.6), 0, Math.PI*2);
+                        ctx.fill();
+                    }
+
+                    // head
+                    const headGrd = ctx.createRadialGradient(x, y, 0, x, y, comet.headSize*4);
+                    headGrd.addColorStop(0, 'rgba(255,255,255,1)');
+                    headGrd.addColorStop(0.15, 'rgba(255,245,180,0.95)');
+                    headGrd.addColorStop(0.3, 'rgba(255,170,80,0.85)');
+                    headGrd.addColorStop(0.55, 'rgba(240,90,40,0.55)');
+                    headGrd.addColorStop(1, 'rgba(140,30,10,0)');
+                    ctx.fillStyle = headGrd;
+                    ctx.beginPath(); ctx.arc(x, y, comet.headSize*1.8, 0, Math.PI*2); ctx.fill();
+                    ctx.globalCompositeOperation = 'source-over';
+                    ctx.fillStyle = 'rgba(255,255,255,0.95)';
+                    ctx.beginPath(); ctx.arc(x, y, Math.max(1.2, comet.headSize*0.45), 0, Math.PI*2); ctx.fill();
+
+                    comet.trail = comet.trail.filter(p => p.life>0.02);
+                }
+                requestAnimationFrame(loop);
+            }
+            requestAnimationFrame(loop);
+
+            // occasionally tweak appearance to keep it lively
+            setInterval(()=>{
+                comet.headSize = 5 + Math.random()*12;
+            }, 16000);
+
+        })();
+    
+
+        // Parallax mouse-driven subtle movement for the nebula behind About
+        (function(){
+            const about = document.querySelector('.about-card');
+            const layers = about ? about.querySelector('.about-bg-layers') : null;
+            if (!about || !layers) return;
+            let w = window.innerWidth, h = window.innerHeight;
+            function onMove(e){
+                const x = (e.clientX / w - 0.5) * 20; // tweak multiplier for strength
+                const y = (e.clientY / h - 0.5) * 12;
+                layers.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+            }
+            window.addEventListener('mousemove', onMove);
+            window.addEventListener('resize', ()=>{ w = window.innerWidth; h = window.innerHeight; });
+        })();
+
+    </script>
+</body>
+</html>
